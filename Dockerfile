@@ -1,19 +1,10 @@
-FROM python:3.7.3-stretch
+FROM python:3
 
-# Working Directory
-WORKDIR /app
+WORKDIR /usr/src/app
 
-# Copy source code to working directory
-COPY . flask_app/web.py /app/
-COPY . nlib /app/
+COPY requirements.txt ./
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Install packages from requirements.txt
-# hadolint ignore=DL3013
-RUN pip install --upgrade pip &&\
-    pip install --trusted-host pypi.python.org -r requirements.txt
+COPY . .
 
-# Expose port 80
-EXPOSE 80
-
-# Run app.py at container launch
-CMD ["python", "web.py"]
+CMD [ "python", "./app.py" ]
